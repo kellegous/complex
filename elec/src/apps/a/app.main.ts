@@ -1,8 +1,10 @@
-/// <reference path="../../lib/github-electron/github-electron.d.ts"/>
+/// <reference path="../../dec/github-electron/github-electron.d.ts"/>
+/// <reference path="../../dec/github-electron/github-electron-main.d.ts"/>
 
 module main {
-	var app = <GitHubElectron.App>require('app'),
-		BrowserWindow = <new (...args: any[]) => GitHubElectron.BrowserWindow>require('browser-window');
+var app = require('app'),
+	BrowserWindow = require('browser-window');
+
 
 app.on('ready', () => {
 	var win = new BrowserWindow({
