@@ -1,6 +1,6 @@
 require 'pathname'
 
-def make_apps(dst, src)
+def make_apps(dst, src, deps)
 	apps = File.join(src, "apps")
 
 	FileList["#{apps}/*"].map do |a|
@@ -8,6 +8,7 @@ def make_apps(dst, src)
 
 		res = []
 		tscs = FileList["#{a}/**/*.ts"]
+		scss = FileList['#{a}/**/*.scss']
 
 		FileList["#{a}/**/*"].each do |s|
 			d = File.join(
@@ -16,8 +17,13 @@ def make_apps(dst, src)
 
 			if d.end_with? '.main.ts'
 				d.gsub!(/\.ts/, '.js')
-				file d => tscs do
+				file d => tscs + deps do
 					sh 'tsc', '--out', d, s
+				end
+			elsif d.end_with? '.scss'
+				d.gsub! /\.scss/, '.css'
+				file d => scss do
+					sh 'scss', '--style=compact', '--no-cache', s, d
 				end
 			elsif d.end_with? '.ts'
 				next

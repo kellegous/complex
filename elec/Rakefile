@@ -2,7 +2,7 @@ include Rake::DSL
 
 require './build'
 
-apps = make_apps('out', 'src')
+apps = make_apps('out', 'src', FileList['src/lib/**/*'])
 
 task :default => apps
 task :clean do
